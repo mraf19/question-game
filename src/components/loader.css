@@ -1,0 +1,51 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  --c: no-repeat linear-gradient(#f9a8d4 0 0);
+  background:
+    var(--c), var(--c), var(--c), var(--c), var(--c), var(--c), var(--c),
+    var(--c), var(--c);
+  background-size: 32px 32px;
+  animation:
+    l32-1 1s infinite,
+    l32-2 1s infinite;
+}
+@keyframes l32-1 {
+  0%,
+  100% {
+    width: 85px;
+    height: 85px;
+  }
+  35%,
+  65% {
+    width: 125px;
+    height: 125px;
+  }
+}
+@keyframes l32-2 {
+  0%,
+  40% {
+    background-position:
+      0 0,
+      0 50%,
+      0 100%,
+      50% 100%,
+      100% 100%,
+      100% 50%,
+      100% 0,
+      50% 0,
+      50% 50%;
+  }
+  60%,
+  100% {
+    background-position:
+      0 50%,
+      0 100%,
+      50% 100%,
+      100% 100%,
+      100% 50%,
+      100% 0,
+      50% 0,
+      0 0,
+      50% 50%;
+  }
+}

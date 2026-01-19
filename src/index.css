@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+body {
+  background-color: var(--color-bg);
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/assets/fonts/Poppins-Thin.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/assets/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/assets/fonts/Poppins-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/src/assets/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* === Brand === */
+  --color-primary: #f9a8d4; /* Pastel pink utama */
+  --color-primary-hover: #f472b6;
+  --color-primary-soft: #fdf2f8;
+
+  /* === Accent === */
+  --color-accent: #fbcfe8; /* Badge, highlight */
+  --color-accent-soft: #fff7fb;
+
+  /* === Background === */
+  --color-bg: #fff7fb; /* Background app */
+  --color-bg-card: #ffffff; /* Card soal */
+  --color-bg-muted: #fce7f3; /* Panel / hint */
+
+  /* === Text === */
+  --color-text-primary: #831843; /* Pertanyaan */
+  --color-text-secondary: #9d174d; /* Deskripsi */
+  --color-text-muted: #be185d; /* Placeholder */
+
+  /* === Status === */
+  --color-success: #86efac; /* Hijau pastel */
+  --color-error: #fda4af; /* Merah pastel */
+  --color-warning: #fde68a; /* Kuning pastel */
+
+  /* === Border === */
+  --color-border: # ;
+
+  --font-poppins: "Poppins", system-ui, -apple-system, sans-serif;
+}
