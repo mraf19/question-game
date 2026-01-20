@@ -5,7 +5,7 @@ import Loader from "../components/loader";
 import { useNavigate } from "react-router";
 import { usePlayer } from "../store/use-player";
 
-const Question = () => {
+const QuestionPage = () => {
   const navigate = useNavigate();
   const { mode, turn, setTurn, resetApplication } = useApplication();
   const { getAvailableQuestions, markAsked, resetQuestions } = useQuestion();
@@ -84,4 +84,4 @@ const Question = () => {
   );
 };
 
-export default Question;
+export default QuestionPage;

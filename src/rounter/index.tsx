@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router";
 import Layout from "../layout";
-import { lazy } from "react";
-const RegisterPlayer = lazy(() => import("../pages/register-player"));
-const AddQuestions = lazy(() => import("../pages/add-questions"));
-const TypeSelection = lazy(() => import("../pages/type-selection"));
-const Question = lazy(() => import("../pages/question"));
+import RegisterPlayer from "../pages/register-player";
+import AddQuestions from "../pages/add-questions";
+import TypeSelection from "../pages/type-selection";
+import Question from "../pages/question";
+
 const Router = createBrowserRouter([
   {
     path: "/",
