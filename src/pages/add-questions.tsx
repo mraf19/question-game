@@ -98,7 +98,7 @@ const AddQuestions = () => {
     return <></>;
   }
   return (
-    <div className="flex flex-col h-full items-center py-10 gap-6 px-8">
+    <div className="flex flex-col h-full items-center py-32 gap-6 px-8">
       <h1 className="font-poppins font-bold text-2xl text-text-secondary">
         {title}
       </h1>
