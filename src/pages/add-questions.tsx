@@ -9,12 +9,14 @@ import { useQuestion, type Question } from "../store/use-question";
 import { useNavigate } from "react-router";
 import { useApplication } from "../store/use-application";
 import { v4 as uuidv4 } from "uuid";
+import { usePlayer } from "../store/use-player";
 
 const AddQuestions = () => {
   const navigate = useNavigate();
   const { addQuestionsBulk, hasAddQuestions, hasAddedQuestions } =
     useQuestion();
-  const { mode, turn, setMode, setTurn, resetApplication } = useApplication();
+  const { players, nextTurn, resetTurn } = usePlayer();
+  const { mode, turn, setMode, resetApplication } = useApplication();
   const [id, setId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -37,10 +39,7 @@ const AddQuestions = () => {
     const question: Question = {
       id: uuidv4(),
       text: input,
-      askedTo: {
-        player1: false,
-        player2: false,
-      },
+      askedTo: [],
       type: mode,
     };
     if (id) {
@@ -65,20 +64,21 @@ const AddQuestions = () => {
     setQuestions([]);
     inputRef?.current?.focus();
     if (mode === "CASUAL") {
-      setTurn(turn === "player1" ? "player2" : "player1");
-
-      if (turn === "player2") {
+      nextTurn();
+      if (turn === players[players.length - 1]) {
         setMode("DEEP");
+        resetTurn();
       }
       return;
     }
 
-    if (turn === "player1") {
-      setTurn("player2");
+    if (turn !== players[players.length - 1]) {
+      nextTurn();
       return;
     }
     hasAddQuestions();
     resetApplication();
+    resetTurn()
     navigate("/");
   };
 

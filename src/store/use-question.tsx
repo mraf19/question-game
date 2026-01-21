@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { CasualQuestions, DeepQuestions } from "../constants/questions";
-import type { PlayerKey } from "./use-player";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 
@@ -10,15 +9,18 @@ export interface Question {
   id: string;
   text: string;
   type: QuestionType;
-  askedTo: Record<PlayerKey, boolean>;
+  askedTo: string[];
 }
 
 interface QuestionState {
   questions: Question[];
   hasAddedQuestions: boolean;
-  getAvailableQuestions: (type: QuestionType, player: PlayerKey) => Question[];
+  getAvailableQuestions: (
+    type: QuestionType,
+    playerId: string | null,
+  ) => Question[];
 
-  markAsked: (id: string, player: PlayerKey) => void;
+  markAsked: (id: string, playerId: string) => void;
 
   addQuestionsBulk: (newQuestions: Question[]) => void;
 
@@ -34,13 +36,13 @@ export const useQuestion = create<QuestionState>()(
           id: uuidv4(),
           text: q,
           type: "CASUAL" as QuestionType,
-          askedTo: { player1: false, player2: false },
+          askedTo: [],
         })),
         ...DeepQuestions.map((q) => ({
           id: uuidv4(),
           text: q,
           type: "DEEP" as QuestionType,
-          askedTo: { player1: false, player2: false },
+          askedTo: [],
         })),
       ],
 
@@ -50,19 +52,19 @@ export const useQuestion = create<QuestionState>()(
           hasAddedQuestions: true,
         }));
       },
-      getAvailableQuestions: (type, player) =>
-        get().questions.filter((q) => q.type === type && !q.askedTo[player]),
-
-      markAsked: (id, player) =>
+      getAvailableQuestions: (type, playerId) => {
+        if (!playerId) return [];
+        return get().questions.filter(
+          (q) => q.type === type && !q.askedTo.includes(playerId),
+        );
+      },
+      markAsked: (id, playerId) =>
         set((state) => ({
           questions: state.questions.map((q) =>
             q.id === id
               ? {
                   ...q,
-                  askedTo: {
-                    ...q.askedTo,
-                    [player]: true,
-                  },
+                  askedTo: [...q.askedTo, playerId],
                 }
               : q,
           ),
@@ -81,13 +83,13 @@ export const useQuestion = create<QuestionState>()(
               id: uuidv4(),
               text: q,
               type: "CASUAL" as QuestionType,
-              askedTo: { player1: false, player2: false },
+              askedTo: [],
             })),
             ...DeepQuestions.map((q) => ({
               id: uuidv4(),
               text: q,
               type: "DEEP" as QuestionType,
-              askedTo: { player1: false, player2: false },
+              askedTo: [],
             })),
           ],
           hasAddedQuestions: false,

@@ -7,14 +7,14 @@ import { usePlayer } from "../store/use-player";
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { mode, turn, setTurn, resetApplication } = useApplication();
+  const { mode, resetApplication, turn } = useApplication();
   const { getAvailableQuestions, markAsked, resetQuestions } = useQuestion();
-  const { resetPlayers } = usePlayer();
+  const { resetPlayers, players, nextTurn, resetTurn } = usePlayer();
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
 
   const questions = useMemo(() => {
-    return getAvailableQuestions(mode, turn);
+    return getAvailableQuestions(mode, turn?.id || null);
   }, [mode, turn, getAvailableQuestions]);
 
   const getQuestion = useCallback(() => {
@@ -26,29 +26,42 @@ const QuestionPage = () => {
   }, [questions]);
 
   const changeTurn = () => {
-    setTurn(turn === "player1" ? "player2" : "player1");
+    if (players.length === 0) return;
+
+    nextTurn();
     navigate("/type-selection");
   };
+
+  const loadQuestion = useCallback(() => {
+    const selected = getQuestion();
+    if (!selected || !turn) return;
+
+    setQuestion(selected);
+    markAsked(selected.id, turn.id);
+  }, [getQuestion, markAsked, turn]);
 
   const resetHandler = () => {
     resetApplication();
     resetQuestions();
     resetPlayers();
-    navigate("/")
+    navigate("/");
+    resetTurn();
   };
 
   useEffect(() => {
+    if (!turn) return;
+
     const timer = setTimeout(() => {
-      const selected = getQuestion();
-      if (selected) {
-        setQuestion(selected);
-        markAsked(selected.id, turn);
-      }
+      loadQuestion();
       setLoading(false);
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [turn, loadQuestion]);
+
+  if (!loading && !question) {
+    return <p>Tidak ada pertanyaan tersedia</p>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-6">

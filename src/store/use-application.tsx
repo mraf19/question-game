@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { QuestionType } from "./use-question";
-import type { PlayerKey } from "./use-player";
+import type { Player } from "./use-player";
 
 interface ApplicationState {
-  turn: PlayerKey;
+  turn: Player | null;
   mode: QuestionType;
-  setTurn: (turn: PlayerKey) => void;
+  setTurn: (turn: Player | null) => void;
   setMode: (mode: QuestionType) => void;
   resetApplication: () => void;
 }
@@ -14,14 +14,14 @@ interface ApplicationState {
 export const useApplication = create<ApplicationState>()(
   persist(
     (set) => ({
-      turn: "player1",
+      turn: null,
       mode: "CASUAL",
       setMode: (mode: QuestionType) => {
         set(() => ({
           mode,
         }));
       },
-      setTurn: (turn: PlayerKey) => {
+      setTurn: (turn: Player | null) => {
         set(() => ({
           turn,
         }));
@@ -29,7 +29,7 @@ export const useApplication = create<ApplicationState>()(
       resetApplication: () => {
         set(() => ({
           mode: "CASUAL",
-          turn: "player1",
+          turn: null,
         }));
       },
     }),
