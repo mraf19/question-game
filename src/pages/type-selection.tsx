@@ -33,13 +33,13 @@ const TypeSelection = () => {
   };
 
   const nextHandler = () => {
-    setSelectedMode(null);
     navigate("/question");
   };
 
   // Cleanup timer saat component unmount
   useEffect(() => {
     return () => {
+      setSelectedMode(null);
       if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }
