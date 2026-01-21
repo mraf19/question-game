@@ -4,14 +4,16 @@ import { useQuestion, type Question } from "../store/use-question";
 import Loader from "../components/loader";
 import { useNavigate } from "react-router";
 import { usePlayer } from "../store/use-player";
+import { APPLICATION_LABELS } from "../constants/labels";
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { mode, resetApplication, turn } = useApplication();
+  const { mode, resetApplication, turn, gameMode, resetGameMode } = useApplication();
   const { getAvailableQuestions, markAsked, resetQuestions } = useQuestion();
   const { resetPlayers, players, nextTurn, resetTurn } = usePlayer();
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
+  const title = APPLICATION_LABELS[gameMode].QUESTIONS_PAGE.TITLE;
 
   const questions = useMemo(() => {
     return getAvailableQuestions(mode, turn?.id || null);
@@ -43,6 +45,7 @@ const QuestionPage = () => {
   const resetHandler = () => {
     resetApplication();
     resetQuestions();
+    resetGameMode();
     resetPlayers();
     navigate("/");
     resetTurn();
@@ -71,7 +74,7 @@ const QuestionPage = () => {
         <div className="w-full flex flex-col items-center gap-10">
           <div className="w-4/5 flex flex-col items-center bg-primary rounded-4xl border-3 border-text-muted gap-5">
             <h5 className="px-10 pt-5 pb-3 border-b-3 w-full text-xl font-poppins text-text-muted border-b-text-muted">
-              Aku mau tauu...
+              {title}
             </h5>
             <p className="px-10 pb-10 text-white text-2xl font-poppins font-semibold">
               {question?.text || "Tidak ada pertanyaan tersedia"}

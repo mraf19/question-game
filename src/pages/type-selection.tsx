@@ -3,20 +3,18 @@ import { useApplication } from "../store/use-application";
 import { useState, useEffect, useRef } from "react";
 import Loader from "../components/loader";
 import { useNavigate } from "react-router";
+import { APPLICATION_LABELS } from "../constants/labels";
 
 const modes: QuestionType[] = ["CASUAL", "DEEP"];
 
 const TypeSelection = () => {
   const navigate = useNavigate();
-  const { setMode } = useApplication();
+  const { setMode, gameMode, mode } = useApplication();
   const [selectedMode, setSelectedMode] = useState<QuestionType | null>(null);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<number | null>(null);
 
-  const word =
-    selectedMode === "CASUAL"
-      ? "Keknya kita santai dlu kali yaaa, aku mau tau sesuatu donggg"
-      : "Sesekali serius yuuu, aku mau ngomongin sesuatu niiii";
+  const word = APPLICATION_LABELS[gameMode].TYPE_SELECTION[mode];
 
   const handleRandomMode = () => {
     setLoading(true);
@@ -33,13 +31,13 @@ const TypeSelection = () => {
   };
 
   const nextHandler = () => {
-    setSelectedMode(null);
     navigate("/question");
   };
 
   // Cleanup timer saat component unmount
   useEffect(() => {
     return () => {
+      setSelectedMode(null);
       if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }

@@ -8,6 +8,7 @@ import IconExport from "../assets/export.svg";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { useSyncTurn } from "../hooks.tsx/use-sync-turn";
+import { useApplication } from "../store/use-application";
 
 interface JSONData {
   deep?: string[];
@@ -35,10 +36,11 @@ const createQuestions = (
   }));
 
 const Layout = () => {
-  const navigate = useNavigate();
   useSyncTurn();
+  const navigate = useNavigate();
   const { players, currentTurnIndex, hasAddedPlayer } = usePlayer();
   const { hasAddedQuestions, addQuestionsBulk } = useQuestion();
+  const { hasAddedGameMode } = useApplication();
   const [loading, setLoading] = useState(true);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -85,14 +87,16 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (!hasAddedPlayer) {
+    if (!hasAddedGameMode) {
+      navigate("/mode-selection");
+    } else if (!hasAddedPlayer) {
       navigate("/register-player");
     } else if (!hasAddedQuestions) {
       navigate("/add-question");
     } else {
       navigate("/type-selection");
     }
-  }, [hasAddedPlayer, navigate, hasAddedQuestions]);
+  }, [hasAddedGameMode, hasAddedPlayer, navigate, hasAddedQuestions]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -112,7 +116,7 @@ const Layout = () => {
           duration: 2000,
         }}
       />
-      {hasAddedPlayer ? (
+      {hasAddedPlayer && hasAddedGameMode ? (
         <div className="absolute top-[2%] flex items-center justify-between px-4 w-full">
           <div
             className="justify-self-start relative px-10 py-3 text-white font-semibold bg-linear-to-b from-transparent to-primary-hover transition-all duration-100 hover:bg-bottom active:scale-95 rounded-bl-4xl rounded-br-xs rounded-tr-4xl rounded-tl-xs"

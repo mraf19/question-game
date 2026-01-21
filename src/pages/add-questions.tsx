@@ -10,21 +10,22 @@ import { useNavigate } from "react-router";
 import { useApplication } from "../store/use-application";
 import { v4 as uuidv4 } from "uuid";
 import { usePlayer } from "../store/use-player";
+import { APPLICATION_LABELS } from "../constants/labels";
 
 const AddQuestions = () => {
   const navigate = useNavigate();
   const { addQuestionsBulk, hasAddQuestions, hasAddedQuestions } =
     useQuestion();
   const { players, nextTurn, resetTurn } = usePlayer();
-  const { mode, turn, setMode, resetApplication } = useApplication();
+  const { mode, turn, setMode, resetApplication, gameMode } = useApplication();
   const [id, setId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const title =
-    mode === "CASUAL"
-      ? "Hal kecil apa yang ingin kamu tahu dari pasanganmu?"
-      : "Aku mau tau tentang ini dong....";
+  console.log(gameMode);
+  console.log(APPLICATION_LABELS);
+  const title = APPLICATION_LABELS[gameMode].ADD_QUESTIONS[mode];
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -78,7 +79,7 @@ const AddQuestions = () => {
     }
     hasAddQuestions();
     resetApplication();
-    resetTurn()
+    resetTurn();
     navigate("/");
   };
 
