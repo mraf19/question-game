@@ -1,12 +1,37 @@
 import { useNavigate } from "react-router";
 import { useApplication, type GameModeType } from "../store/use-application";
+import { useQuestion, type Question } from "../store/use-question";
+import {
+  CasualQuestions,
+  DeepQuestions,
+  FriendshipCasualQuestions,
+  FriendshipDeepQuestions,
+} from "../constants/questions";
+import { v4 as uuidv4 } from "uuid";
 
 const gameMode: GameModeType[] = ["COUPLE", "MULTIPLAYER"];
 
 const ModeSelection = () => {
   const navigate = useNavigate();
+  const { addQuestionsBulk } = useQuestion();
   const { setGameMode, hasAddGameMode } = useApplication();
   const gameModeClickHandler = (mode: GameModeType) => {
+    const casual =
+      mode === "COUPLE" ? CasualQuestions : FriendshipCasualQuestions;
+    const deep = mode === "COUPLE" ? DeepQuestions : FriendshipDeepQuestions;
+    const casualMapped: Question[] = casual.map((text) => ({
+      id: uuidv4(),
+      text,
+      askedTo: [],
+      type: "CASUAL",
+    }));
+    const deepMapped: Question[] = deep.map((text) => ({
+      id: uuidv4(),
+      text,
+      askedTo: [],
+      type: "DEEP",
+    }));
+    addQuestionsBulk([...casualMapped, ...deepMapped]);
     setGameMode(mode);
     hasAddGameMode();
     navigate("/register-player");

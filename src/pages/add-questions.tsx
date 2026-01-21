@@ -22,8 +22,6 @@ const AddQuestions = () => {
   const [input, setInput] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(gameMode);
-  console.log(APPLICATION_LABELS);
   const title = APPLICATION_LABELS[gameMode].ADD_QUESTIONS[mode];
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

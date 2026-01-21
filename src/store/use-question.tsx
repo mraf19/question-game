@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import { CasualQuestions, DeepQuestions } from "../constants/questions";
 import { persist } from "zustand/middleware";
-import { v4 as uuidv4 } from "uuid";
 
 export type QuestionType = "CASUAL" | "DEEP";
 
@@ -32,20 +30,7 @@ interface QuestionState {
 export const useQuestion = create<QuestionState>()(
   persist(
     (set, get) => ({
-      questions: [
-        ...CasualQuestions.map((q) => ({
-          id: uuidv4(),
-          text: q,
-          type: "CASUAL" as QuestionType,
-          askedTo: [],
-        })),
-        ...DeepQuestions.map((q) => ({
-          id: uuidv4(),
-          text: q,
-          type: "DEEP" as QuestionType,
-          askedTo: [],
-        })),
-      ],
+      questions: [],
 
       hasAddedQuestions: false,
       hasAddQuestions: () => {
@@ -97,20 +82,7 @@ export const useQuestion = create<QuestionState>()(
 
       resetQuestions: () => {
         set(() => ({
-          questions: [
-            ...CasualQuestions.map((q) => ({
-              id: uuidv4(),
-              text: q,
-              type: "CASUAL" as QuestionType,
-              askedTo: [],
-            })),
-            ...DeepQuestions.map((q) => ({
-              id: uuidv4(),
-              text: q,
-              type: "DEEP" as QuestionType,
-              askedTo: [],
-            })),
-          ],
+          questions: [],
           hasAddedQuestions: false,
         }));
       },
