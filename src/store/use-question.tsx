@@ -24,6 +24,7 @@ interface QuestionState {
 
   addQuestionsBulk: (newQuestions: Question[]) => void;
 
+  shuffleQuestions: () => void;
   hasAddQuestions: () => void;
   resetQuestions: () => void;
 }
@@ -76,6 +77,24 @@ export const useQuestion = create<QuestionState>()(
             questions: [...state.questions, ...newQuestions],
           };
         }),
+      shuffleQuestions: () =>
+        set((state) => {
+          const shuffled = [...state.questions];
+          let seed = Date.now();
+
+          const next = () => {
+            seed = (seed * 9301 + 49297) % 233280;
+            return seed;
+          };
+
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = next() % (i + 1);
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+
+          return { questions: shuffled };
+        }),
+
       resetQuestions: () => {
         set(() => ({
           questions: [

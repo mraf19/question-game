@@ -8,8 +8,10 @@ import { APPLICATION_LABELS } from "../constants/labels";
 
 const QuestionPage = () => {
   const navigate = useNavigate();
-  const { mode, resetApplication, turn, gameMode, resetGameMode } = useApplication();
-  const { getAvailableQuestions, markAsked, resetQuestions } = useQuestion();
+  const { mode, resetApplication, turn, gameMode, resetGameMode } =
+    useApplication();
+  const { getAvailableQuestions, markAsked, resetQuestions, shuffleQuestions } =
+    useQuestion();
   const { resetPlayers, players, nextTurn, resetTurn } = usePlayer();
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,7 +31,7 @@ const QuestionPage = () => {
 
   const changeTurn = () => {
     if (players.length === 0) return;
-
+    shuffleQuestions();
     nextTurn();
     navigate("/type-selection");
   };
