@@ -97,20 +97,25 @@ const AddQuestions = () => {
     return <></>;
   }
   return (
-    <div className="flex flex-col h-full items-center py-32 gap-6 px-8">
+    <div className="flex flex-col h-full items-center py-32 gap-6 px-8 w-full">
       <h1 className="font-poppins font-bold text-2xl text-text-secondary">
         {title}
       </h1>
-      <input
-        type="text"
-        value={input}
-        ref={inputRef}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        disabled={questions.length === 10}
-        placeholder="Masukkin pertanyaannya yaa..."
-        className="w-full p-4 border border-primary placeholder:text-primary placeholder:italic text-text-primary rounded-xl outline-none disabled:opacity-50"
-      />
+      <div className="flex flex-col gap-1 w-full">
+        <input
+          type="text"
+          value={input}
+          ref={inputRef}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          disabled={questions.length === 10}
+          placeholder="Masukkin pertanyaannya yaa..."
+          className="w-full p-4 border border-primary placeholder:text-primary placeholder:italic text-text-primary rounded-xl outline-none disabled:opacity-50"
+        />
+        <p className="font-poppins text-xs italic text-primary">
+          *Kamu bisa masukkin 3 sampai 10 pertanyaan
+        </p>
+      </div>
       <button
         onClick={handleSubmit}
         disabled={!input || questions.length === 10}
@@ -170,7 +175,7 @@ const AddQuestions = () => {
           </div>
         </div>
       ) : null}
-      {questions.length === 10 ? (
+      {questions.length >= 3 ? (
         <button
           onClick={handleDone}
           className="font-poppins p-4 border border-primary bg-primary rounded-xl text-white disabled:opacity-50"

@@ -5,6 +5,7 @@ import Loader from "../components/loader";
 import { useNavigate } from "react-router";
 import { usePlayer } from "../store/use-player";
 import { APPLICATION_LABELS } from "../constants/labels";
+import { confirmToastAsync } from "../components/confirm-toast-async";
 
 const QuestionPage = () => {
   const navigate = useNavigate();
@@ -44,7 +45,11 @@ const QuestionPage = () => {
     markAsked(selected.id, turn.id);
   }, [getQuestion, markAsked, turn]);
 
-  const resetHandler = () => {
+  const resetHandler = async () => {
+    const confirmed = await confirmToastAsync(
+      "Yakin nih mau mulai dari awal lagi ?",
+    );
+    if (!confirmed) return;
     resetApplication();
     resetQuestions();
     resetGameMode();
@@ -85,13 +90,13 @@ const QuestionPage = () => {
           <div className="w-3/5 flex flex-col gap-3">
             <button
               onClick={changeTurn}
-              className="py-3 bg-white font-poppins font-bold text-lg text-text-primary hover:text-text-secondary transition w-full border border-text-primary rounded-lg"
+              className="py-3 bg-white font-poppins font-bold text-lg text-text-primary hover:text-text-secondary transition w-full border border-text-primary rounded-lg hover:cursor-pointer"
             >
               Udah? Gantian yukk
             </button>
             <button
               onClick={resetHandler}
-              className="py-3 bg-white font-poppins font-bold text-lg text-text-primary hover:text-text-secondary transition w-full border border-text-primary rounded-lg"
+              className="py-3 bg-white font-poppins font-bold text-lg text-text-primary hover:text-text-secondary transition w-full border border-text-primary rounded-lg hover:cursor-pointer"
             >
               Mau mulai ulang deh....
             </button>
